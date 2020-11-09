@@ -23,8 +23,9 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  justify-content: flex-start;
 }
 
 .calendar {
-  flex-grow: 3;
+  flex-grow: 6;
 }

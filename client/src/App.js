@@ -3,6 +3,7 @@ import { enGB } from 'date-fns/locale';
 import { DatePickerCalendar } from 'react-nice-dates';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -12,6 +13,8 @@ import './App.css';
 
 const schema = yup.object({
   file: yup.string().required(),
+  numPeople: yup.number().required(),
+  numTests: yup.number().required()
 });
 
 class App extends Component {
@@ -51,6 +54,7 @@ class App extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    // console.log(e);
   }
   
 render() {
@@ -63,16 +67,73 @@ render() {
         </header>
         <div className="body">
           <div className="sidebar">
-            <Formik validationSchema={schema} onSubmit={this.handleSubmit}>
-              <Form>
+            <Formik 
+              initialValues={{
+                numPeople: '',
+              }}
+              validationSchema={schema} onSubmit={this.handleSubmit}>
+              {({
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                values,
+                touched,
+                isValid,
+                errors,
+              }) => (
+              <Form noValidate onSubmit={handleSubmit}>
                 <Form.File
                   required
                   className="position-relative" 
                   label="Upload CSV"
+                  name="file"
+                  id="validationFormik01"
+                  onChange={handleChange}
+                  isInvalid={!!errors.file}
+                  feedback={errors.file}
                   feedbackTooltip
                 />
+                  <Form.Group>
+                    <Form.Row>
+                      <Form.Label column>
+                        Number of people at location
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numPeople"
+                          id="validationFormik02"
+                          onChange={handleChange}
+                          isValid={touched.numPeople && !errors.numPeople}
+                          isInvalid={!!errors.numPeople}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numPeople}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        Cap of PCR tests processed/day
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numTests"
+                          id="validationFormik03"
+                          onChange={handleChange}
+                          isValid={touched.numTests && !errors.numTests}
+                          isInvalid={!!errors.numTests}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numTests}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                  </Form.Group>
                 <Button type="submit">Create Schedule</Button>
               </Form>
+              )}
             </Formik>
             {/* <form onSubmit={this.handleSubmit}>
               <p>
