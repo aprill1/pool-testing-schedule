@@ -44,24 +44,26 @@ class App extends Component {
   //   return body;
   // };
   
+  handleSubmit = async (values) => {
+    console.log("submitted");
+    // values.preventDefault();
+    const response = await fetch('/api/schedule/inputs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ post: values }),
+    });
+    const body = await response.text();
+    console.log(body);
+    
+    // this.setState({ responseToPost: body });
+  };
+
   // handleSubmit = async e => {
   //   e.preventDefault();
-  //   const response = await fetch('/api/world', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ post: this.state.post }),
-  //   });
-  //   const body = await response.text();
-    
-  //   this.setState({ responseToPost: body });
-  // };
-
-  handleSubmit = async e => {
-    e.preventDefault();
-    // console.log(e);
-  }
+  //   // console.log(e);
+  // }
   
 render() {
     return (
