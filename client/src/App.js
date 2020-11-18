@@ -14,7 +14,13 @@ import './App.css';
 const schema = yup.object({
   file: yup.string().required(),
   numPeople: yup.number().required(),
-  numTests: yup.number().required()
+  numTests: yup.number().required(),
+  numTestDays: yup.number().required(),
+  numTestHours: yup.number().required(),
+  numStaff: yup.number().required(),
+  testTime: yup.number().required(),
+  numWeeks: yup.number().required(),
+  maxGroups: yup.number().required()
 });
 
 class App extends Component {
@@ -68,9 +74,7 @@ render() {
         <div className="body">
           <div className="sidebar">
             <Formik 
-              initialValues={{
-                numPeople: '',
-              }}
+              initialValues={{}}
               validationSchema={schema} onSubmit={this.handleSubmit}>
               {({
                 handleSubmit,
@@ -127,6 +131,114 @@ render() {
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.numTests}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        # testing days in a week
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numTestDays"
+                          id="validationFormik04"
+                          onChange={handleChange}
+                          isValid={touched.numTestDays && !errors.numTestDays}
+                          isInvalid={!!errors.numTestDays}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numTestDays}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        # testing hours in a day
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numTestHours"
+                          id="validationFormik05"
+                          onChange={handleChange}
+                          isValid={touched.numTestHours && !errors.numTestHours}
+                          isInvalid={!!errors.numTestHours}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numTestHours}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        # staff
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numStaff"
+                          id="validationFormik06"
+                          onChange={handleChange}
+                          isValid={touched.numStaff && !errors.numStaff}
+                          isInvalid={!!errors.numStaff}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numStaff}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        Time per test in hours
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="testTime"
+                          id="validationFormik07"
+                          onChange={handleChange}
+                          isValid={touched.testTime && !errors.testTime}
+                          isInvalid={!!errors.testTime}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.testTime}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        Trial length in weeks
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="numWeeks"
+                          id="validationFormik08"
+                          onChange={handleChange}
+                          isValid={touched.numWeeks && !errors.numWeeks}
+                          isInvalid={!!errors.numWeeks}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.numWeeks}
+                        </Form.Control.Feedback>
+                      </Col>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        Max groups testing per day
+                      </Form.Label>
+                      <Col>
+                        <Form.Control 
+                          type="number"
+                          name="maxGroups"
+                          id="validationFormik09"
+                          onChange={handleChange}
+                          isValid={touched.maxGroups && !errors.maxGroups}
+                          isInvalid={!!errors.maxGroups}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.maxGroups}
                         </Form.Control.Feedback>
                       </Col>
                     </Form.Row>
