@@ -1,6 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Install `yarn` with `brew install yarn` and `yarn install`. 
+Install `bootstrap` with `npm install bootstrap`
 
 ## Available Scripts
 

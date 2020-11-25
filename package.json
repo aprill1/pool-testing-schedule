@@ -10,12 +10,15 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
+    "csv2json": "^2.0.2",
+    "csvtojson": "^2.0.10",
     "date-fns": "^2.16.1",
     "express": "^4.17.1",
     "formik": "^2.2.3",
     "nodemon": "^2.0.6",
     "react-bootstrap": "^1.4.0",
     "react-nice-dates": "^3.0.7",
+    "schedule": "^0.5.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {
