@@ -45,7 +45,7 @@ class App extends Component {
   // };
   
   handleSubmit = async (values) => {
-    console.log("submitted");
+    console.log(values);
     // values.preventDefault();
     const response = await fetch('/api/schedule/inputs', {
       method: 'POST',
@@ -86,6 +86,7 @@ render() {
                 touched,
                 isValid,
                 errors,
+                setFieldValue
               }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.File
@@ -94,7 +95,9 @@ render() {
                   label="Upload CSV"
                   name="file"
                   id="validationFormik01"
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    setFieldValue("file", event.currentTarget.files[0]);
+                  }}
                   isInvalid={!!errors.file}
                   feedback={errors.file}
                   feedbackTooltip
