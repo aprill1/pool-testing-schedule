@@ -16,10 +16,12 @@ app.post('/api/schedule/inputs', (req, res) => {
   var post = req.body.post;
   console.log(post);
   console.log(post.numPeople);
+  console.log(post.file);
+  var newScheduler = new Scheduler(post.file, post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
 
-  var newScheduler = new Scheduler(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
-  var scheduleNumPeople = newScheduler.totalTests();
-  console.log(scheduleNumPeople);
+  // var scheduleNumPeople = newScheduler.totalTests();
+
+  console.log("okay here");
   res.send(
     `I received your POST request. This is what you sent me: ${req.body.post}`,
   );
