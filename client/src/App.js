@@ -47,18 +47,13 @@ class App extends Component {
   // };
   
   handleSubmit = async (values) => {
-    const formData = new FormData();
-    Object.keys(values).forEach(key => {
-      formData.append(key, values[key]);
-    });
-    console.log(formData);
     // values.preventDefault();
     const response = await fetch('/api/schedule/inputs', {
       method: 'POST',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // },
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: values,
     });
     const body = await response.json();
     console.log(body);
