@@ -2,6 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Install `yarn` with `brew install yarn` and `yarn install`. 
 Install `bootstrap` with `npm install bootstrap`
+Install express file-upload with `npm i express-fileupload`
 
 ## Available Scripts
 

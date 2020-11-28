@@ -2,7 +2,11 @@ const csv=require('csvtojson')
 
 class Scheduler {
   // var number_residents = 215;
-  constructor (file, numPeople, numTests, numTestDays, numTestHours, numStaff, testTime, numWeeks, maxGroups){
+  constructor(){
+    console.log("making a new Scheduler");
+  }
+
+  addParameters(numPeople, numTests, numTestDays, numTestHours, numStaff, testTime, numWeeks, maxGroups){
     
     //TODO: change if testing frequency is not a week
     this.number_residents = numPeople;
@@ -41,23 +45,30 @@ class Scheduler {
 
     //file of residents (TODO: needs to take in a file not a string)
     this.residents = [];
-    console.log("this filer"+file.type);
-    this.file = file;
-    console.log("this is the filer"+file[0])
     // this.getResidentNames(file);
     this.residents_test_schedule = new Map();
-    console.log(this.number_residents);
+    // console.log("This should be false: "+(this.fileName == null)+" " +this.fileName);
+    if(this.fileName != null){
+      console.log("this is what's getting returned");
+      return this.getResidentNames();
+    }
   }
 
-  getResidentNames(file){
+  addFile(filename){
+    console.log("in method"+filename);
+    this.fileName = filename;
+    console.log("this is the new file"+this.fileName);
+  }
+
+  getResidentNames(){
     // Invoking csv returns a promise
     let residents = [];
-    console.log("this is the filer"+file[0].size);
-    const converter=csv()
+    console.log("getting resident names");
+    return csv()
      // .fromFile('./example_residents.csv')
-     .fromFile(file)
+     .fromFile(this.fileName)
      .then((json)=>{
-
+      console.log("found file");
        var total = json.length;
        // console.log("promise of csv for residents fulfilled"+JSON.stringify(this.residents)+"  "+this.residents.length);
        for (var i = 0; i<total; i++){
@@ -67,7 +78,7 @@ class Scheduler {
           this.residents.push(full_name);
        }
     }).then(function() {
-      this.specificResidentsTested();
+      return this.specificResidentsTested();
     }.bind(this));
   }
 
@@ -121,6 +132,11 @@ class Scheduler {
       }
       this.totalTestsPerDay.set(i, peopleToTest);
     }
+    return this.totalTestsPerDay;
+  }
+
+  getTotalTests(){
+    console.log("this is the get method");
     return this.totalTestsPerDay;
   }
 
