@@ -48,15 +48,9 @@ class App extends Component {
   
   handleSubmit = async (values) => {
     // values.preventDefault();
-    const response = await fetch('/api/schedule/inputs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: values,
-    });
-    const body = await response.json();
-    console.log(body);
+    axios.post('/api/schedule/inputs', values, {}).then(res => {
+      console.log(res.data);
+    }).catch(err => console.log(err));
     
     // this.setState({ responseToPost: body });
   };
