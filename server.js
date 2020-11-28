@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const Scheduler = require('./scheduler');
+var newScheduler = new Scheduler();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -33,6 +34,8 @@ app.post('/api/schedule/fileupload', (req, res) => {
           return res.status(500).send({ msg: "Error occured" });
       }
       // returing the response with file path and name
+      newScheduler.addFile(`${__dirname}/data/${myFile.name}`);
+      console.log("This is the new file in server "+`${__dirname}/data/${myFile.name}`);
       return res.send({name: myFile.name, path: `/${myFile.name}`});
   });
 })
@@ -40,13 +43,16 @@ app.post('/api/schedule/fileupload', (req, res) => {
 app.post('/api/schedule/inputs', (req, res) => {
   var post = req.body;
   console.log(post);
-  console.log(post.numPeople);
-  console.log(post.file);
-  var newScheduler = new Scheduler(post.file, post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
+  
+  var ans = newScheduler.addParameters(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
 
   // var scheduleNumPeople = newScheduler.totalTests();
-
-  console.log("okay here");
+  (async function(){
+    var result = await ans;
+    console.log('Woo done!', result);
+    
+  })()
+  console.log(ans);
   res.send(
     `I received your POST request. This is what you sent me: ${req.body.post}`,
   );
