@@ -2,10 +2,11 @@ const csv=require('csvtojson')
 
 class Scheduler {
   // var number_residents = 215;
-  constructor (numPeople, numTests, numTestDays, numTestHours, numStaff, testTime, numWeeks, maxGroups){
+  constructor (file, numPeople, numTests, numTestDays, numTestHours, numStaff, testTime, numWeeks, maxGroups){
     
     //TODO: change if testing frequency is not a week
     this.number_residents = numPeople;
+    //TODO: this.numner_residents should match this.residents.length .. can place check in getResidentNames
     this.tests_shipped_per_day = numTests;
     this.testing_days_per_week = numTestDays;
 
@@ -19,16 +20,6 @@ class Scheduler {
     //TODO: change for flexibility but default is 7
     // var days_between_testing = 7; // weekly testing
 
-    //file of residents (TODO: needs to take in a file not a string)
-    var residents;
-    // Invoking csv returns a promise
-    // const converter=csv()
-    //  .fromFile('./Book2.csv')
-    //  .then((json)=>{
-    //    this.residents = json;
-    //    console.log("promise of csv for residents fulfilled");
-    //  });
-  
     //calculated values
     this.max_possible_tests_per_day = Math.min(this.tests_shipped_per_day, this.hours_per_day/this.hours_per_test*this.staff);
 
@@ -48,25 +39,61 @@ class Scheduler {
     this.testdays_to_groups = new Map();
     this.totalTestsPerDay = new Map();
 
+    //file of residents (TODO: needs to take in a file not a string)
+    this.residents = [];
+    console.log("this filer"+file.type);
+    this.file = file;
+    console.log("this is the filer"+file[0])
+    // this.getResidentNames(file);
+    this.residents_test_schedule = new Map();
     console.log(this.number_residents);
   }
 
-  newCalendar(){
-    var added = 0;
-    console.log("added"+added);
-    var testGroup = 1;
-    console.log("here");
-    while(added<this.number_residents){
-      console.log("in loop"+testGroup);
-      this.newTestsPerDay.push(Math.min(this.max_group_size, this.number_residents-added));
-      this.testGroups.set(testGroup, Math.min(this.max_group_size, this.number_residents-added));
-      console.log("added"+this.max_group_size);
-      added += this.max_group_size;
-      testGroup ++;
-      console.log("added"+added+" "+this.number_residents);
-    }
+  getResidentNames(file){
+    // Invoking csv returns a promise
+    let residents = [];
+    console.log("this is the filer"+file[0].size);
+    const converter=csv()
+     // .fromFile('./example_residents.csv')
+     .fromFile(file)
+     .then((json)=>{
+
+       var total = json.length;
+       // console.log("promise of csv for residents fulfilled"+JSON.stringify(this.residents)+"  "+this.residents.length);
+       for (var i = 0; i<total; i++){
+          var last_name = JSON.stringify(json[i]["Last"]);
+          var first_name = JSON.stringify(json[i]["First"]);
+          var full_name = last_name.concat(", ",first_name);
+          this.residents.push(full_name);
+       }
+    }).then(function() {
+      this.specificResidentsTested();
+    }.bind(this));
   }
 
+  specificResidentsTested(){
+    console.log("in a second then function");
+    this.totalTests();
+  }
+
+   newCalendar(){
+    var added = 0;
+    var testGroup = 1;
+    console.log("newCalendar"+this.residents.length);
+    var r_index = 0;
+    while(added<this.number_residents){
+      var newlyAdded = Math.min(this.max_group_size, this.number_residents-added);
+      this.newTestsPerDay.push(newlyAdded);
+      var newlyAddedResidents = [];
+      for(var i = 0; i<newlyAdded; i++){
+        newlyAddedResidents.push(this.residents[r_index]);
+        r_index++;
+      }
+      this.testGroups.set(testGroup, newlyAddedResidents);
+      added += this.max_group_size;
+      testGroup ++;
+    }
+  }
 
   daysToTest(){
    for(let testGroup of this.testGroups.keys()){
@@ -86,17 +113,17 @@ class Scheduler {
 
   totalTests(){
     this.newCalendar();
-    console.log(this.testGroups);
     this.daysToTest();
     for(var i = 1; i<=this.testdays_to_groups.size; i++){
-      var total = 0;
+      var peopleToTest = [];
       for(let group of this.testdays_to_groups.get(i)){
-        total+=this.testGroups.get(group);
+        peopleToTest = peopleToTest.concat(this.testGroups.get(group));
       }
-    this.totalTestsPerDay.set(i, total);
+      this.totalTestsPerDay.set(i, peopleToTest);
     }
     return this.totalTestsPerDay;
   }
+
 }
 
 module.exports = Scheduler;
