@@ -45,17 +45,21 @@ app.post('/api/schedule/inputs', (req, res) => {
   console.log(post);
   
   var ans = newScheduler.addParameters(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
-
+  console.log("this is ans: "+ans);
+  ans.then(function(result){
+    return res.status(200).send({msg: result});
+    // return result;
+  });
   // var scheduleNumPeople = newScheduler.totalTests();
-  (async function(){
-    var result = await ans;
-    console.log('Woo done!', result);
+  // (async function(){
+  //   var result = await ans;
+  //   console.log('Woo done!', result);
     
-  })()
-  console.log(ans);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
+  // })()
+  // console.log(ans);
+  // res.send(
+  //   `I received your POST request. This is what you sent me: ${req.body.post}`,
+  // );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

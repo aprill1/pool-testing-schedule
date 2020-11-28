@@ -132,6 +132,7 @@ class Scheduler {
       }
       this.totalTestsPerDay.set(i, peopleToTest);
     }
+    console.log(this.totalTestsPerDay.get(1));
     return this.totalTestsPerDay;
   }
 
