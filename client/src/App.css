@@ -29,3 +29,33 @@
 .calendar {
   flex-grow: 6;
 }
+
+img{
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+}
+
+.file-upload{
+
+  /* box-shadow: 2px 2px 2px 2px #ccc; */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+/* input , div , button{
+  margin-top: 2rem;
+} */
+
+.upbutton{
+   width: 5rem;
+   padding: .5rem;
+   /* background-color: #2767e9; */
+   /* color: aliceblue; */
+   font-size: 1rem;
+   cursor: pointer;
+}

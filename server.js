@@ -1,9 +1,16 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const Scheduler = require('./scheduler');
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+// middleware
+app.use(express.static('public')); //to access the files in public folder
+app.use(cors()); // it enables all cors requests
+app.use(fileUpload());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -12,8 +19,26 @@ app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
+// file upload api
+app.post('/api/schedule/fileupload', (req, res) => {
+  if (!req.files) {
+      return res.status(500).send({ msg: "file is not found" })
+  }
+      // accessing the file
+  const myFile = req.files.file;
+  //  mv() method places the file inside public directory
+  myFile.mv(`${__dirname}/data/${myFile.name}`, function (err) {
+      if (err) {
+          console.log(err)
+          return res.status(500).send({ msg: "Error occured" });
+      }
+      // returing the response with file path and name
+      return res.send({name: myFile.name, path: `/${myFile.name}`});
+  });
+})
+
 app.post('/api/schedule/inputs', (req, res) => {
-  var post = req.body.post;
+  var post = req.body;
   console.log(post);
   console.log(post.numPeople);
 

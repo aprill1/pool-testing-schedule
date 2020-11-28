@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { enGB } from 'date-fns/locale';
 import { DatePickerCalendar } from 'react-nice-dates';
+import FileUpload from './FileUpload';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -12,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 const schema = yup.object({
-  file: yup.string().required(),
+  // file: yup.string().required(),
   numPeople: yup.number().required(),
   numTests: yup.number().required(),
   numTestDays: yup.number().required(),
@@ -20,7 +21,8 @@ const schema = yup.object({
   numStaff: yup.number().required(),
   testTime: yup.number().required(),
   numWeeks: yup.number().required(),
-  maxGroups: yup.number().required()
+  maxGroups: yup.number().required(),
+  // startDate
 });
 
 class App extends Component {
@@ -45,16 +47,20 @@ class App extends Component {
   // };
   
   handleSubmit = async (values) => {
-    console.log(values);
+    const formData = new FormData();
+    Object.keys(values).forEach(key => {
+      formData.append(key, values[key]);
+    });
+    console.log(formData);
     // values.preventDefault();
     const response = await fetch('/api/schedule/inputs', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: values }),
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // },
+      body: formData,
     });
-    const body = await response.text();
+    const body = await response.json();
     console.log(body);
     
     // this.setState({ responseToPost: body });
@@ -75,6 +81,7 @@ render() {
         </header>
         <div className="body">
           <div className="sidebar">
+          <FileUpload />
             <Formik 
               initialValues={{}}
               validationSchema={schema} onSubmit={this.handleSubmit}>
@@ -89,7 +96,7 @@ render() {
                 setFieldValue
               }) => (
               <Form noValidate onSubmit={handleSubmit}>
-                <Form.File
+                {/* <Form.File
                   required
                   className="position-relative" 
                   label="Upload CSV"
@@ -101,7 +108,7 @@ render() {
                   isInvalid={!!errors.file}
                   feedback={errors.file}
                   feedbackTooltip
-                />
+                /> */}
                   <Form.Group>
                     <Form.Row>
                       <Form.Label column>
@@ -111,7 +118,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numPeople"
-                          id="validationFormik02"
+                          id="validationFormik01"
                           onChange={handleChange}
                           isValid={touched.numPeople && !errors.numPeople}
                           isInvalid={!!errors.numPeople}
@@ -129,7 +136,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numTests"
-                          id="validationFormik03"
+                          id="validationFormik02"
                           onChange={handleChange}
                           isValid={touched.numTests && !errors.numTests}
                           isInvalid={!!errors.numTests}
@@ -147,7 +154,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numTestDays"
-                          id="validationFormik04"
+                          id="validationFormik03"
                           onChange={handleChange}
                           isValid={touched.numTestDays && !errors.numTestDays}
                           isInvalid={!!errors.numTestDays}
@@ -165,7 +172,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numTestHours"
-                          id="validationFormik05"
+                          id="validationFormik04"
                           onChange={handleChange}
                           isValid={touched.numTestHours && !errors.numTestHours}
                           isInvalid={!!errors.numTestHours}
@@ -183,7 +190,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numStaff"
-                          id="validationFormik06"
+                          id="validationFormik05"
                           onChange={handleChange}
                           isValid={touched.numStaff && !errors.numStaff}
                           isInvalid={!!errors.numStaff}
@@ -201,7 +208,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="testTime"
-                          id="validationFormik07"
+                          id="validationFormik06"
                           onChange={handleChange}
                           isValid={touched.testTime && !errors.testTime}
                           isInvalid={!!errors.testTime}
@@ -219,7 +226,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="numWeeks"
-                          id="validationFormik08"
+                          id="validationFormik07"
                           onChange={handleChange}
                           isValid={touched.numWeeks && !errors.numWeeks}
                           isInvalid={!!errors.numWeeks}
@@ -237,7 +244,7 @@ render() {
                         <Form.Control 
                           type="number"
                           name="maxGroups"
-                          id="validationFormik09"
+                          id="validationFormik08"
                           onChange={handleChange}
                           isValid={touched.maxGroups && !errors.maxGroups}
                           isInvalid={!!errors.maxGroups}
