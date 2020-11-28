@@ -33,6 +33,9 @@ app.post('/api/schedule/fileupload', (req, res) => {
           console.log(err)
           return res.status(500).send({ msg: "Error occured" });
       }
+      // TODO: do something with the file here (it is in the data folder)
+      // probably change Scheduler to just take the file?
+
       // returing the response with file path and name
       newScheduler.addFile(`${__dirname}/data/${myFile.name}`);
       console.log("This is the new file in server "+`${__dirname}/data/${myFile.name}`);
