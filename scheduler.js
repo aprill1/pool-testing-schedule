@@ -84,7 +84,7 @@ class Scheduler {
 
   specificResidentsTested(){
     console.log("in a second then function");
-    this.totalTests();
+    return this.totalTests();
   }
 
    newCalendar(){

@@ -33,9 +33,6 @@ app.post('/api/schedule/fileupload', (req, res) => {
           console.log(err)
           return res.status(500).send({ msg: "Error occured" });
       }
-      // TODO: do something with the file here (it is in the data folder)
-      // probably change Scheduler to just take the file?
-
       // returing the response with file path and name
       newScheduler.addFile(`${__dirname}/data/${myFile.name}`);
       console.log("This is the new file in server "+`${__dirname}/data/${myFile.name}`);
@@ -49,8 +46,10 @@ app.post('/api/schedule/inputs', (req, res) => {
   
   var ans = newScheduler.addParameters(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
   console.log("this is ans: "+ans);
+  
   ans.then(function(result){
-    return res.status(200).send({msg: result});
+    console.log("result: "+result);
+    return res.status(200).send({schedule: result});
     // return result;
   });
   // var scheduleNumPeople = newScheduler.totalTests();

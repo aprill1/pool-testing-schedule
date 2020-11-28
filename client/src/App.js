@@ -51,6 +51,7 @@ class App extends Component {
     // values.preventDefault();
     axios.post('/api/schedule/inputs', values, {}).then(res => {
       console.log(res.data);
+      console.log(res);
     }).catch(err => console.log(err));
     
     // this.setState({ responseToPost: body });
