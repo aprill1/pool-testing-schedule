@@ -21,7 +21,7 @@ class Scheduler {
     this.testing_weeks = numWeeks;
     this.max_simultaneous_groups = maxGroups;
     this.startDate = new Date(startDate);
-
+    console.log("this is the startDate"+ this.startDate);
 
     //TODO: change for flexibility but default is 7
     // var days_between_testing = 7; // weekly testing
@@ -132,11 +132,11 @@ class Scheduler {
       for(let group of this.testdays_to_groups.get(i)){
         peopleToTest = peopleToTest.concat(this.testGroups.get(group));
       }
-      var testDay = new Date();
+      var testDay = new Date(this.startDate);
       testDay = testDay.setDate(this.startDate.getDate() + (i-1)); 
       this.totalTestsPerDay.set(new Date(testDay).toLocaleDateString("en-US"), peopleToTest);
     }
-    // console.log("this is the length"+this.totalTestsPerDay.keys().length);
+    // check for correct date and people schedulings
     // for(let [key, value] of this.totalTestsPerDay){
     //   console.log("day"+key + " " + value);
     // }
