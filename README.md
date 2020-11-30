@@ -4,6 +4,7 @@ Install `yarn` with `brew install yarn` and `yarn install`.
 Install `bootstrap` with `npm install bootstrap`
 Install express file-upload with `npm i express-fileupload`
 Install axios `npm install axios`
+Install date-picker `npm install react-datepicker`
 
 ## Available Scripts
 

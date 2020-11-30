@@ -42,9 +42,9 @@ app.post('/api/schedule/fileupload', (req, res) => {
 
 app.post('/api/schedule/inputs', (req, res) => {
   var post = req.body;
-  console.log(post);
+  console.log("this is the req: "+JSON.stringify(post));
   
-  var ans = newScheduler.addParameters(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups);
+  var ans = newScheduler.addParameters(post.numPeople, post.numTests, post.numTestDays, post.numTestHours, post.numStaff, post.testTime, post.numWeeks, post.maxGroups, post.startDate);
   console.log("this is ans: "+ans);
   
   ans.then(function(result){
