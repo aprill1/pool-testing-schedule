@@ -30,7 +30,9 @@ const schema = yup.object({
 
 class App extends Component {
   state = {
-    scheduleMap: ''
+    scheduleMap: '',
+    startDate: new Date(),
+    fileUploaded: false
   };
   
   componentDidMount() {
@@ -41,17 +43,19 @@ class App extends Component {
   
   handleSubmit = async (values) => {
     // values.preventDefault();
+    this.setState({startDate: values.startDate});
     axios.post('/api/schedule/inputs', values, {}).then(res => {
       this.setState({scheduleMap: new Map(JSON.parse(res.data.schedule))});
     }).catch(err => console.log(err));
-    
-    // this.setState({ responseToPost: body });
   };
 
-  // handleSubmit = async e => {
-  //   e.preventDefault();
-  //   // console.log(e);
-  // }
+  handleDayClick = date => {
+
+  };
+
+  setFileUpload = () => {
+    this.setState({fileUploaded: true});
+  };
   
 render() {
     return (
@@ -63,17 +67,18 @@ render() {
         </header>
         <div className="body">
           <div className="sidebar">
-          <FileUpload />
+          <FileUpload onSubmit={this.setFileUpload}/>
+          {this.state.fileUploaded &&
             <Formik 
               initialValues={{startDate: new Date()}}
               validationSchema={schema} onSubmit={this.handleSubmit}>
               {({
                 handleSubmit,
                 handleChange,
-                handleBlur,
+                // handleBlur,
                 values,
                 touched,
-                isValid,
+                // isValid,
                 errors,
                 setFieldValue
               }) => (
@@ -242,10 +247,10 @@ render() {
                 <Button type="submit">Create Schedule</Button>
               </Form>
               )}
-            </Formik>
+            </Formik>}
           </div>
           <div className="calendar">
-            <DatePickerCalendar locale={enUS} />
+            <DatePickerCalendar date={this.state.startDate} onDayClick={this.handleDayClick} locale={enUS} />
           </div>
         </div>
       </div>

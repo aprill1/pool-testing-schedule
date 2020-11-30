@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
-function FileUpload() {
+function FileUpload({onSubmit}) {
     const [file, setFile] = useState(''); // storing the uploaded file
     const [data, getFile] = useState({ name: "", path: "" }); // storing the received file from backend
     const el = useRef(); // accesing input element
@@ -18,7 +18,8 @@ function FileUpload() {
             console.log(res.data.path);
             getFile({ name: res.data.name,
                      path: res.data.path
-                   })
+                   });
+            onSubmit();
         }).catch(err => console.log(err))}
     return (
         <div>
