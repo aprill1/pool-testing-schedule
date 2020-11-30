@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { enUS } from 'date-fns/locale';
-import { DatePickerCalendar } from 'react-nice-dates';
+import { Calendar } from 'react-nice-dates';
 import FileUpload from './FileUpload';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -32,7 +33,8 @@ class App extends Component {
   state = {
     scheduleMap: '',
     startDate: new Date(),
-    fileUploaded: false
+    fileUploaded: false,
+    showModal: false
   };
   
   componentDidMount() {
@@ -46,12 +48,23 @@ class App extends Component {
     this.setState({startDate: values.startDate});
     axios.post('/api/schedule/inputs', values, {}).then(res => {
       this.setState({scheduleMap: new Map(JSON.parse(res.data.schedule))});
+      console.log(this.state.scheduleMap.keys());
     }).catch(err => console.log(err));
   };
 
   handleDayClick = date => {
-
+    // console.log(new Date(date));
+    const selectedDate = new Date(date);
+    // console.log(selectedDate.toLocaleDateString("en-US"))
+    if (this.state.scheduleMap.has(selectedDate.toLocaleDateString("en-US"))) {
+      console.log("this day is part of schedule");
+      this.setState({showModal: true});
+    }
   };
+
+  handleClose = () => {
+    this.setState({showModal: false});
+  }
 
   setFileUpload = () => {
     this.setState({fileUploaded: true});
@@ -250,8 +263,22 @@ render() {
             </Formik>}
           </div>
           <div className="calendar">
-            <DatePickerCalendar date={this.state.startDate} onDayClick={this.handleDayClick} locale={enUS} />
+            <Calendar onDayClick={this.handleDayClick} locale={enUS} />
           </div>
+          <Modal show={this.state.showModal} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     );
