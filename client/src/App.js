@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { enGB } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { DatePickerCalendar } from 'react-nice-dates';
 import FileUpload from './FileUpload';
 import Form from 'react-bootstrap/Form';
@@ -8,9 +8,11 @@ import Col from 'react-bootstrap/Col';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import DatePicker from "react-datepicker"
 
 import 'react-nice-dates/build/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 
 const schema = yup.object({
@@ -23,14 +25,12 @@ const schema = yup.object({
   testTime: yup.number().required(),
   numWeeks: yup.number().required(),
   maxGroups: yup.number().required(),
-  // startDate
+  startDate: yup.date().required()
 });
 
 class App extends Component {
   state = {
-    response: '',
-    post: '',
-    responseToPost: '',
+    scheduleMap: ''
   };
   
   componentDidMount() {
@@ -39,19 +39,10 @@ class App extends Component {
     //   .catch(err => console.log(err));
   }
   
-  // callApi = async () => {
-  //   const response = await fetch('/api/hello');
-  //   const body = await response.json();
-  //   if (response.status !== 200) throw Error(body.message);
-    
-  //   return body;
-  // };
-  
   handleSubmit = async (values) => {
     // values.preventDefault();
     axios.post('/api/schedule/inputs', values, {}).then(res => {
-      console.log(res.data);
-      console.log(res);
+      this.setState({scheduleMap: new Map(JSON.parse(res.data.schedule))});
     }).catch(err => console.log(err));
     
     // this.setState({ responseToPost: body });
@@ -74,7 +65,7 @@ render() {
           <div className="sidebar">
           <FileUpload />
             <Formik 
-              initialValues={{}}
+              initialValues={{startDate: new Date()}}
               validationSchema={schema} onSubmit={this.handleSubmit}>
               {({
                 handleSubmit,
@@ -87,19 +78,6 @@ render() {
                 setFieldValue
               }) => (
               <Form noValidate onSubmit={handleSubmit}>
-                {/* <Form.File
-                  required
-                  className="position-relative" 
-                  label="Upload CSV"
-                  name="file"
-                  id="validationFormik01"
-                  onChange={(event) => {
-                    setFieldValue("file", event.currentTarget.files[0]);
-                  }}
-                  isInvalid={!!errors.file}
-                  feedback={errors.file}
-                  feedbackTooltip
-                /> */}
                   <Form.Group>
                     <Form.Row>
                       <Form.Label column>
@@ -245,26 +223,29 @@ render() {
                         </Form.Control.Feedback>
                       </Col>
                     </Form.Row>
+                    <Form.Row>
+                      <Form.Label column>
+                        Starting date
+                      </Form.Label>
+                      <Col>
+                        <DatePicker 
+                        id="validationFormilk09"
+                        selected={values.startDate}
+                        dateFormat="MMMM d, yyyy"
+                        className="form-control"
+                        name="startDate"
+                        onChange={date => setFieldValue('startDate', date)}
+                        />
+                      </Col>
+                    </Form.Row>
                   </Form.Group>
                 <Button type="submit">Create Schedule</Button>
               </Form>
               )}
             </Formik>
-            {/* <form onSubmit={this.handleSubmit}>
-              <p>
-                <strong>Upload CSV</strong>
-              </p>
-              <input
-                type="text"
-                value={this.state.post}
-                onChange={e => this.setState({ post: e.target.value })}
-              />
-              <button type="submit">Submit</button>
-            </form>
-            <p>{this.state.responseToPost}</p> */}
           </div>
           <div className="calendar">
-            <DatePickerCalendar locale={enGB} />
+            <DatePickerCalendar locale={enUS} />
           </div>
         </div>
       </div>

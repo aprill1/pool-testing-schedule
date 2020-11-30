@@ -49,7 +49,7 @@ app.post('/api/schedule/inputs', (req, res) => {
   
   ans.then(function(result){
     console.log("result: "+result);
-    return res.status(200).send({schedule: result});
+    return res.status(200).send({schedule: JSON.stringify([...result])});
     // return result;
   });
   // var scheduleNumPeople = newScheduler.totalTests();
