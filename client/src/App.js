@@ -34,7 +34,9 @@ class App extends Component {
     scheduleMap: '',
     startDate: new Date(),
     fileUploaded: false,
-    showModal: false
+    showModal: false,
+    currentDate: new Date(),
+    peopleToBeTested: []
   };
   
   componentDidMount() {
@@ -59,6 +61,8 @@ class App extends Component {
     if (this.state.scheduleMap.has(selectedDate.toLocaleDateString("en-US"))) {
       console.log("this day is part of schedule");
       this.setState({showModal: true});
+      this.setState({currentDate: selectedDate});
+      this.setState({peopleToBeTested: this.state.scheduleMap.get(selectedDate.toLocaleDateString("en-US"))});
     }
   };
 
@@ -267,16 +271,23 @@ render() {
           </div>
           <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>{this.state.currentDate.toDateString()}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Body>
+              <h4>Number of people to test: {this.state.peopleToBeTested.length}</h4>
+              <ul>
+                {this.state.peopleToBeTested.map(function(name, index){
+                    return <li key={ index }>{name}</li>;
+                  })}
+              </ul>
+            </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={this.handleClose}>
+              {/* <Button variant="primary" onClick={this.handleClose}>
                 Save Changes
-              </Button>
+              </Button> */}
             </Modal.Footer>
           </Modal>
         </div>
