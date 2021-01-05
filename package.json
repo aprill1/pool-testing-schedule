@@ -4,7 +4,7 @@
   "license": "MIT",
   "engines": {
     "yarn": "1.x"
-  }
+  },
   "scripts": {
     "start": "node server.js",
     "client": "cd client && yarn start",
