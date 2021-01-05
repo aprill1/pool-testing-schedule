@@ -2,8 +2,11 @@
   "name": "pool-testing-schedule",
   "version": "1.0.0",
   "license": "MIT",
+  "engines": {
+    "yarn": "1.x"
+  }
   "scripts": {
-    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node server.js",
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
